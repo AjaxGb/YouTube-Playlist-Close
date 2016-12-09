@@ -5,7 +5,7 @@
 // @author       AjaxGb
 // @match        http*://www.youtube.com/*
 // @run-at       document-start
-// @resource     button https://gitcdn.link/repo/AjaxGb/YouTube-Playlist-Close/master/closeMedium.png
+// @resource     button https://raw.githubusercontent.com/AjaxGb/YouTube-Playlist-Close/master/closeMedium.png
 // @grant        GM_getResourceURL
 // @noframes
 // ==/UserScript==
