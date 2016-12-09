@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         YouTube Playlist Close
-// @version      1.0
+// @version      1.1
 // @description  Allow quick closing of playlists
 // @author       AjaxGb
 // @match        http*://www.youtube.com/*
@@ -14,7 +14,7 @@
 	'use strict';
 
 	function getQueryArgs(query){
-		query = query || window.location.search.substring(1);
+		query = (query || window.location.search).substring(1);
 		if(!query) return {};
 		return query.split('&').reduce(function(prev, curr){
 			const p = curr.split('=');
@@ -33,10 +33,11 @@
 				search += '&'+encodeURIComponent(prop)+'='+encodeURIComponent(query[prop]);
 			}
 		}
-		window.location.search = '?' + search.substr(1);
+		return '?' + search.substr(1);
 	}
 
-	const b = document.createElement('button'), s = b.style;
+	let q;
+	const b = document.createElement('a'), s = b.style;
 	s.width  = '26px';
 	s.height = '28px';
 	s.right = s.top = '0';
@@ -53,15 +54,22 @@
 	b.onmouseleave = function(){
 		s.opacity = 0.5;
 	};
-	b.onclick = function(){
-		const q = getQueryArgs();
+	b.onmouseup = function(){
 		q.time_continue = document.getElementById('movie_player').getCurrentTime()|0;
-		delete q.list;
-		delete q.index;
-		setQueryArgs(q);
+		b.search = setQueryArgs(q);
+		setTimeout(resetQuery);
 	};
+	function resetQuery(){
+		delete q.time_continue;
+		b.search = setQueryArgs(q);
+	}
 
 	function addButton(p){
+		b.href = location.toString();
+		q = getQueryArgs(b.search);
+		delete q.list;
+		delete q.index;
+		b.search = setQueryArgs(q);
 		p.style.position = 'relative';
 		p.appendChild(b);
 	}
