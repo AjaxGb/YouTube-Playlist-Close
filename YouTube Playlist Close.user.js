@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         YouTube Playlist Close
-// @version      1.1
+// @version      1.2
 // @description  Allow quick closing of playlists
 // @author       AjaxGb
 // @match        http*://www.youtube.com/*
@@ -77,15 +77,8 @@
 	const observer = new MutationObserver(function(mrs){
 		if(document.contains(b)) return;
 		for(let i = mrs.length - 1; i >= 0; --i){
-			const t = mrs[i].target;
-			if(t){
-				if(t.classList && t.classList.contains('playlist-info')){
-					addButton(t);
-				}else if (t.getElementsByClassName){
-					const p = t.getElementsByClassName('playlist-info')[0];
-					if(p) addButton(p);
-				}
-			}
+			const p = mrs[i].target && mrs[i].target.getElementsByClassName('playlist-info')[0];
+			if(p) addButton(p);
 		}
 	});
 	observer.observe(document.documentElement, {
