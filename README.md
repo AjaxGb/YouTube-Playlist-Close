@@ -1,5 +1,5 @@
 # YouTube Playlist Close
-![Adds a simple button](screenshots/screenshot 1.png)
+![Adds a simple button](screenshots/screenshot%201.png)
 
 A userscript to make closing playlists easier. Keeps the video you were watching and your position in it.
 
