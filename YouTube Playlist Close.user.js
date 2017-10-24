@@ -40,19 +40,18 @@
 	const b = document.createElement('a'), s = b.style;
 	s.width  = '26px';
 	s.height = '28px';
-	s.right = s.top = '0';
+	s.right = s.top = '-5px';
 	s.background = 'url("' + GM_getResourceURL('button') + '") center';
 	s.position = 'absolute';
 	s.cursor = 'pointer';
-	s.opacity = 0.5;
-	b.classList.add('yt-uix-tooltip');
+	s.opacity = '0.6';
 	b.title = 'Close playlist';
 
 	b.onmouseenter = function(){
-		s.opacity = 0.6;
+		s.opacity = '0.9';
 	};
 	b.onmouseleave = function(){
-		s.opacity = 0.5;
+		s.opacity = '0.6';
 	};
 	b.onmouseup = function(){
 		q.time_continue = document.getElementById('movie_player').getCurrentTime()|0;
@@ -76,10 +75,8 @@
 
 	const observer = new MutationObserver(function(mrs){
 		if(document.contains(b)) return;
-		for(let i = mrs.length - 1; i >= 0; --i){
-			const p = mrs[i].target && mrs[i].target.getElementsByClassName('playlist-info')[0];
-			if(p) addButton(p);
-		}
+		const p = document.getElementById('header-contents');
+		if(p) addButton(p);
 	});
 	observer.observe(document.documentElement, {
 		childList: true,
