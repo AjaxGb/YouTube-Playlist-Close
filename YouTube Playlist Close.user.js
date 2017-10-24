@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         YouTube Playlist Close
-// @version      1.4
+// @version      1.5
 // @description  Allow quick closing of playlists
 // @author       AjaxGb
 // @match        http*://www.youtube.com/*
@@ -37,7 +37,7 @@
 	}
 
 	let q;
-	const b = document.createElement('button'), s = b.style;
+	const b = document.createElement('a'), s = b.style;
 	s.width  = '26px';
 	s.height = '28px';
     s.marginLeft = '5px';
