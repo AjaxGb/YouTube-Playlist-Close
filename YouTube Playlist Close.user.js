@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         YouTube Playlist Close
-// @version      1.2
+// @version      1.3
 // @description  Allow quick closing of playlists
 // @author       AjaxGb
 // @match        http*://www.youtube.com/*
