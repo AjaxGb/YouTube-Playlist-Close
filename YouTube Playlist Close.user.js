@@ -41,6 +41,7 @@
 	s.width  = '26px';
 	s.height = '28px';
     s.marginLeft = '5px';
+    s.marginTop = '1px';
 	s.background = 'url("' + GM_getResourceURL('button') + '") center';
 	s.verticalAlign = 'middle';
 	s.cursor = 'pointer';
