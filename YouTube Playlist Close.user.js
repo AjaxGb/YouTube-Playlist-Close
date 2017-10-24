@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         YouTube Playlist Close
-// @version      1.3
+// @version      1.4
 // @description  Allow quick closing of playlists
 // @author       AjaxGb
 // @match        http*://www.youtube.com/*
@@ -37,21 +37,22 @@
 	}
 
 	let q;
-	const b = document.createElement('a'), s = b.style;
+	const b = document.createElement('button'), s = b.style;
 	s.width  = '26px';
 	s.height = '28px';
-	s.right = s.top = '-5px';
+    s.marginLeft = '5px';
 	s.background = 'url("' + GM_getResourceURL('button') + '") center';
-	s.position = 'absolute';
+	s.verticalAlign = 'middle';
 	s.cursor = 'pointer';
-	s.opacity = '0.6';
+	s.opacity = 0.5;
+	b.classList.add('yt-uix-tooltip');
 	b.title = 'Close playlist';
 
 	b.onmouseenter = function(){
-		s.opacity = '0.9';
+		s.opacity = 0.6;
 	};
 	b.onmouseleave = function(){
-		s.opacity = '0.6';
+		s.opacity = 0.5;
 	};
 	b.onmouseup = function(){
 		q.time_continue = document.getElementById('movie_player').getCurrentTime()|0;
@@ -75,8 +76,10 @@
 
 	const observer = new MutationObserver(function(mrs){
 		if(document.contains(b)) return;
-		const p = document.getElementById('header-contents');
-		if(p) addButton(p);
+		for(let i = mrs.length - 1; i >= 0; --i){
+			const p = mrs[i].target && mrs[i].target.getElementsByClassName('appbar-playlist-controls')[0];
+			if(p) addButton(p);
+		}
 	});
 	observer.observe(document.documentElement, {
 		childList: true,
