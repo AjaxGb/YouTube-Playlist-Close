@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         YouTube Playlist Close
-// @version      1.5
+// @version      1.6
 // @description  Allow quick closing of playlists
 // @author       AjaxGb
 // @match        http*://www.youtube.com/*
@@ -41,7 +41,6 @@
 	s.width  = '26px';
 	s.height = '28px';
     s.marginLeft = '5px';
-    s.marginTop = '1px';
 	s.background = 'url("' + GM_getResourceURL('button') + '") center';
 	s.verticalAlign = 'middle';
 	s.cursor = 'pointer';
