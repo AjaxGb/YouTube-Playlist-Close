@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         YouTube Playlist Close
-// @version      1.6
+// @version      1.7
 // @description  Allow quick closing of playlists
 // @author       AjaxGb
 // @match        http*://www.youtube.com/*
 // @run-at       document-start
-// @resource     button https://raw.githubusercontent.com/AjaxGb/YouTube-Playlist-Close/master/closeMedium.png
+// @resource     button https://raw.githubusercontent.com/AjaxGb/YouTube-Playlist-Close/master/closeMediumDark.png
 // @grant        GM_getResourceURL
 // @noframes
 // ==/UserScript==
@@ -38,14 +38,15 @@
 
 	let q;
 	const b = document.createElement('a'), s = b.style;
-	s.width  = '26px';
-	s.height = '28px';
-    s.marginLeft = '5px';
+	s.width  = '44px';
+	s.height = '40px';
+    s.position = 'absolute';
+    s.top = '-8px';
+    s.right = '0';
 	s.background = 'url("' + GM_getResourceURL('button') + '") center';
-	s.verticalAlign = 'middle';
+    s.backgroundRepeat = 'no-repeat';
 	s.cursor = 'pointer';
 	s.opacity = 0.5;
-	b.classList.add('yt-uix-tooltip');
 	b.title = 'Close playlist';
 
 	b.onmouseenter = function(){
@@ -76,10 +77,8 @@
 
 	const observer = new MutationObserver(function(mrs){
 		if(document.contains(b)) return;
-		for(let i = mrs.length - 1; i >= 0; --i){
-			const p = mrs[i].target && mrs[i].target.getElementsByClassName('appbar-playlist-controls')[0];
-			if(p) addButton(p);
-		}
+        const p = document.getElementById('header-contents');
+        if(p) addButton(p);
 	});
 	observer.observe(document.documentElement, {
 		childList: true,
