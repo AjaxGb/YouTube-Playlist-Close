@@ -49,16 +49,29 @@
 	s.opacity = 0.5;
 	b.title = 'Close playlist';
 
+    function updateURL() {
+		b.href = location.toString();
+		q = getQueryArgs(b.search);
+		delete q.list;
+		delete q.index;
+		b.search = setQueryArgs(q);
+    }
+
 	b.onmouseenter = function(){
+        updateURL();
 		s.opacity = 0.6;
 	};
 	b.onmouseleave = function(){
 		s.opacity = 0.5;
 	};
 	b.onmouseup = function(){
-		q.time_continue = document.getElementById('movie_player').getCurrentTime()|0;
-		b.search = setQueryArgs(q);
-		setTimeout(resetQuery);
+        updateURL();
+        const t = document.getElementById('movie_player').getCurrentTime()|0;
+        if (t > 0) {
+            q.time_continue = t;
+            b.search = setQueryArgs(q);
+            setTimeout(resetQuery);
+        }
 	};
 	function resetQuery(){
 		delete q.time_continue;
@@ -66,11 +79,7 @@
 	}
 
 	function addButton(p){
-		b.href = location.toString();
-		q = getQueryArgs(b.search);
-		delete q.list;
-		delete q.index;
-		b.search = setQueryArgs(q);
+        updateURL();
 		p.style.position = 'relative';
 		p.appendChild(b);
 	}
