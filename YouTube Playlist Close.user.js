@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         YouTube Playlist Close
-// @version      1.8
+// @version      1.9
 // @description  Allow quick closing of playlists
 // @author       AjaxGb
 // @match        http*://www.youtube.com/*
 // @run-at       document-start
-// @resource     button https://raw.githubusercontent.com/AjaxGb/YouTube-Playlist-Close/master/closeMediumDark.png
+// @resource     button https://raw.githubusercontent.com/AjaxGb/YouTube-Playlist-Close/master/closeMediumLight.png
 // @grant        GM_getResourceURL
 // @noframes
 // ==/UserScript==
@@ -40,38 +40,38 @@
 	const b = document.createElement('a'), s = b.style;
 	s.width  = '44px';
 	s.height = '40px';
-    s.position = 'absolute';
-    s.top = '-8px';
-    s.right = '0';
+	s.position = 'absolute';
+	s.top = '0';
+	s.right = '0';
 	s.background = 'url("' + GM_getResourceURL('button') + '") center';
-    s.backgroundRepeat = 'no-repeat';
+	s.backgroundRepeat = 'no-repeat';
 	s.cursor = 'pointer';
 	s.opacity = 0.5;
 	b.title = 'Close playlist';
 
-    function updateURL() {
+	function updateURL() {
 		b.href = location.toString();
 		q = getQueryArgs(b.search);
 		delete q.list;
 		delete q.index;
 		b.search = setQueryArgs(q);
-    }
+	}
 
 	b.onmouseenter = function(){
-        updateURL();
+		updateURL();
 		s.opacity = 0.6;
 	};
 	b.onmouseleave = function(){
 		s.opacity = 0.5;
 	};
 	b.onmouseup = function(){
-        updateURL();
-        const t = document.getElementById('movie_player').getCurrentTime()|0;
-        if (t > 0) {
-            q.time_continue = t;
-            b.search = setQueryArgs(q);
-            setTimeout(resetQuery);
-        }
+		updateURL();
+		const t = document.getElementById('movie_player').getCurrentTime()|0;
+		if (t > 0) {
+			q.time_continue = t;
+			b.search = setQueryArgs(q);
+			setTimeout(resetQuery);
+		}
 	};
 	function resetQuery(){
 		delete q.time_continue;
@@ -79,15 +79,17 @@
 	}
 
 	function addButton(p){
-        updateURL();
+		updateURL();
 		p.style.position = 'relative';
 		p.appendChild(b);
 	}
 
 	const observer = new MutationObserver(function(mrs){
 		if(document.contains(b)) return;
-        const p = document.getElementById('header-contents');
-        if(p) addButton(p);
+
+		const playlist = document.getElementById('player-playlist');
+		const playlistHeader = playlist && playlist.getElementsByClassName('playlist-header')[0];
+		if (playlistHeader) addButton(playlistHeader);
 	});
 	observer.observe(document.documentElement, {
 		childList: true,
