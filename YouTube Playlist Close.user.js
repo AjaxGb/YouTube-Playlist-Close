@@ -54,6 +54,7 @@
 		q = getQueryArgs(b.search);
 		delete q.list;
 		delete q.index;
+		delete q.t;
 		b.search = setQueryArgs(q);
 	}
 
