@@ -5,7 +5,7 @@
 // @author       AjaxGb
 // @match        http*://www.youtube.com/*
 // @run-at       document-start
-// @resource     button https://raw.githubusercontent.com/AjaxGb/YouTube-Playlist-Close/master/closeMediumLight.png
+// @resource     button https://raw.githubusercontent.com/AjaxGb/YouTube-Playlist-Close/master/closeMediumDark.png
 // @grant        GM_getResourceURL
 // @noframes
 // ==/UserScript==
@@ -88,8 +88,8 @@
 	const observer = new MutationObserver(function(mrs){
 		if(document.contains(b)) return;
 
-		const playlist = document.getElementById('player-playlist');
-		const playlistHeader = playlist && playlist.getElementsByClassName('playlist-header')[0];
+		const playlist = document.getElementById('playlist');
+		const playlistHeader = playlist && playlist.getElementsByClassName('header')[0];
 		if (playlistHeader) addButton(playlistHeader);
 	});
 	observer.observe(document.documentElement, {
