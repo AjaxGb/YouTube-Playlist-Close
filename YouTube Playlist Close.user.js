@@ -5,13 +5,55 @@
 // @author       AjaxGb
 // @match        http*://www.youtube.com/*
 // @run-at       document-start
-// @resource     button https://raw.githubusercontent.com/AjaxGb/YouTube-Playlist-Close/master/closeMediumDark.png
+// @resource     buttonDark https://raw.githubusercontent.com/AjaxGb/YouTube-Playlist-Close/master/closeMediumDark.png
+// @resource     buttonLight https://raw.githubusercontent.com/AjaxGb/YouTube-Playlist-Close/master/closeMediumLight.png
 // @grant        GM_getResourceURL
 // @noframes
 // ==/UserScript==
 
 (function(){
 	'use strict';
+
+	function GM_addStyle(css) {
+		const style = document.getElementById('GM_addStyleBy8626') || (function() {
+			const style = document.createElement('style');
+			style.type = 'text/css';
+			style.id = 'GM_addStyleBy8626';
+			document.head.appendChild(style);
+			return style;
+		})();
+		const sheet = style.sheet;
+		sheet.insertRule(css, (sheet.rules || sheet.cssRules || []).length);
+	}
+
+	GM_addStyle(`
+#YT-Playlist-Close-By-AjaxGb-Close-Button-1234567890 {
+	width: 44px;
+	height: 40px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	background-position: center;
+	background-repeat: no-repeat;
+	cursor: pointer;
+	opacity: 0.5;
+}`);
+	GM_addStyle(`
+#YT-Playlist-Close-By-AjaxGb-Close-Button-1234567890:hover {
+	opacity: 0.6;
+}`);
+	GM_addStyle(`
+#playlist #YT-Playlist-Close-By-AjaxGb-Close-Button-1234567890 {
+	background-image: url("${GM_getResourceURL('buttonDark')}");
+}`);
+	GM_addStyle(`
+#player-playlist #YT-Playlist-Close-By-AjaxGb-Close-Button-1234567890 {
+	background-image: url("${GM_getResourceURL('buttonLight')}");
+}`);
+	GM_addStyle(`
+#player-playlist .playlist-header, #playlist .header {
+	position: relative;
+}`);
 
 	function getQueryArgs(query){
 		query = (query || window.location.search).substring(1);
@@ -37,16 +79,8 @@
 	}
 
 	let q;
-	const b = document.createElement('a'), s = b.style;
-	s.width  = '44px';
-	s.height = '40px';
-	s.position = 'absolute';
-	s.top = '0';
-	s.right = '0';
-	s.background = 'url("' + GM_getResourceURL('button') + '") center';
-	s.backgroundRepeat = 'no-repeat';
-	s.cursor = 'pointer';
-	s.opacity = 0.5;
+	const b = document.createElement('a');
+	b.id = 'YT-Playlist-Close-By-AjaxGb-Close-Button-1234567890';
 	b.title = 'Close playlist';
 
 	function updateURL() {
@@ -60,11 +94,8 @@
 
 	b.onmouseenter = function(){
 		updateURL();
-		s.opacity = 0.6;
 	};
-	b.onmouseleave = function(){
-		s.opacity = 0.5;
-	};
+
 	b.onmouseup = function(){
 		updateURL();
 		const t = document.getElementById('movie_player').getCurrentTime()|0;
@@ -74,6 +105,7 @@
 			setTimeout(resetQuery);
 		}
 	};
+
 	function resetQuery(){
 		delete q.time_continue;
 		b.search = setQueryArgs(q);
@@ -81,15 +113,20 @@
 
 	function addButton(p){
 		updateURL();
-		p.style.position = 'relative';
 		p.appendChild(b);
 	}
 
 	const observer = new MutationObserver(function(mrs){
 		if(document.contains(b)) return;
 
-		const playlist = document.getElementById('playlist');
-		const playlistHeader = playlist && playlist.getElementsByClassName('header')[0];
+		const playlist =
+			document.getElementById('playlist') ||
+			document.getElementById('player-playlist');
+
+		const playlistHeader = playlist && (
+			playlist.getElementsByClassName('header')[0] ||
+			playlist.getElementsByClassName('playlist-header')[0]);
+
 		if (playlistHeader) addButton(playlistHeader);
 	});
 	observer.observe(document.documentElement, {
