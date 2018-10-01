@@ -119,13 +119,10 @@
 	const observer = new MutationObserver(function(mrs) {
 		if(document.contains(b)) return;
 
-		const playlist =
-			document.getElementById('playlist') ||
-			document.getElementById('player-playlist');
-
-		const playlistHeader = playlist && (
-			playlist.getElementsByClassName('header')[0] ||
-			playlist.getElementsByClassName('playlist-header')[0]);
+		const playlistHeader = document.querySelector([
+			'#playlist:not(.ytd-miniplayer) .header',
+			'#player-playlist .playlist-header',
+		].join(','));
 
 		if (playlistHeader) addButton(playlistHeader);
 	});
