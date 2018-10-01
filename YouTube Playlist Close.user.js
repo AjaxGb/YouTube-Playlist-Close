@@ -11,7 +11,7 @@
 // @noframes
 // ==/UserScript==
 
-(function(){
+(function() {
 	'use strict';
 
 	function GM_addStyle(css) {
@@ -55,17 +55,17 @@
 	position: relative;
 }`);
 
-	function getQueryArgs(query){
+	function getQueryArgs(query) {
 		query = (query || window.location.search).substring(1);
 		if(!query) return {};
-		return query.split('&').reduce(function(prev, curr){
+		return query.split('&').reduce(function(prev, curr) {
 			const p = curr.split('=');
 			prev[decodeURIComponent(p[0])] = p[1] ? decodeURIComponent(p[1]) : p[1];
 			return prev;
 		}, {});
 	}
 
-	function setQueryArgs(query){
+	function setQueryArgs(query) {
 		if(!query) return;
 		let search = '';
 		for(let prop in query){
@@ -92,11 +92,11 @@
 		b.search = setQueryArgs(q);
 	}
 
-	b.onmouseenter = function(){
+	b.onmouseenter = function() {
 		updateURL();
 	};
 
-	b.onmouseup = function(){
+	b.onmouseup = function() {
 		updateURL();
 		const t = document.getElementById('movie_player').getCurrentTime()|0;
 		if (t > 0) {
@@ -106,17 +106,17 @@
 		}
 	};
 
-	function resetQuery(){
+	function resetQuery() {
 		delete q.time_continue;
 		b.search = setQueryArgs(q);
 	}
 
-	function addButton(p){
+	function addButton(p) {
 		updateURL();
 		p.appendChild(b);
 	}
 
-	const observer = new MutationObserver(function(mrs){
+	const observer = new MutationObserver(function(mrs) {
 		if(document.contains(b)) return;
 
 		const playlist =
